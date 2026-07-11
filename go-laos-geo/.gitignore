@@ -1,0 +1,16 @@
+# Environments
+.env
+.env.local
+.env.*.local
+
+# Go
+bin/
+obj/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Docker
+docker-compose.override.yml
