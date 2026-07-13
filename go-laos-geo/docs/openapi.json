@@ -6,7 +6,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:3000",
+    "host": "localhost:3005",
     "basePath": "/",
     "paths": {
         "/api/v1/districts/{id}/villages": {
@@ -142,6 +142,38 @@
         }
     },
     "definitions": {
+        "domain.Province": {
+            "type": "object",
+            "properties": {
+                "id": { "type": "integer" },
+                "name": { "type": "string" },
+                "name_en": { "type": "string" },
+                "lat": { "type": "number", "format": "float", "nullable": true },
+                "lng": { "type": "number", "format": "float", "nullable": true }
+            }
+        },
+        "domain.District": {
+            "type": "object",
+            "properties": {
+                "id": { "type": "integer" },
+                "name": { "type": "string" },
+                "name_en": { "type": "string" },
+                "province_id": { "type": "integer" },
+                "lat": { "type": "number", "format": "float", "nullable": true },
+                "lng": { "type": "number", "format": "float", "nullable": true }
+            }
+        },
+        "domain.Village": {
+            "type": "object",
+            "properties": {
+                "id": { "type": "integer" },
+                "name": { "type": "string" },
+                "name_en": { "type": "string" },
+                "district_id": { "type": "integer" },
+                "lat": { "type": "number", "format": "float", "nullable": true },
+                "lng": { "type": "number", "format": "float", "nullable": true }
+            }
+        },
         "domain.Pagination": {
             "type": "object",
             "properties": {
@@ -162,7 +194,10 @@
         "domain.ResponseData": {
             "type": "object",
             "properties": {
-                "list_data": {},
+                "list_data": {
+                    "type": "array",
+                    "items": { "type": "object", "description": "Array of Province, District, or Village objects depending on the endpoint." }
+                },
                 "pagination": {
                     "$ref": "#/definitions/domain.Pagination"
                 }

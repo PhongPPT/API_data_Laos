@@ -7,50 +7,44 @@ DROP TABLE IF EXISTS provinces;
 CREATE TABLE IF NOT EXISTS provinces (
     pr_id INTEGER PRIMARY KEY,
     pr_name VARCHAR(255) NOT NULL,
-    pr_name_en VARCHAR(255) NOT NULL,
-    lat DECIMAL(11,8),
-    lng DECIMAL(11,8)
+    pr_name_en VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS districts (
     dr_id INTEGER PRIMARY KEY,
     dr_name VARCHAR(255) NOT NULL,
     dr_name_en VARCHAR(255) NOT NULL,
-    pr_id INTEGER,
-    lat DECIMAL(11,8),
-    lng DECIMAL(11,8)
+    pr_id INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS villages (
     vill_id INTEGER PRIMARY KEY,
     vill_name VARCHAR(255) NOT NULL,
     vill_name_en VARCHAR(255) NOT NULL,
-    dr_id INTEGER,
-    lat DECIMAL(11,8),
-    lng DECIMAL(11,8)
+    dr_id INTEGER
 );
 
 -- Seed Data
 
-INSERT INTO provinces (pr_id, pr_name, pr_name_en, lat, lng) VALUES
-(1, 'ນະຄອນຫລວງວຽງຈັນ', 'Vientiane capital', 17.9757, 102.6331),
-(2, 'ຜົ້ງສາລີ', 'Phongsali', 21.6841, 102.1054),
-(3, 'ຫລວງນ້ຳທາ', 'Louang Namtha', 20.9491, 101.4055),
-(4, 'ອຸດົມໄຊ', 'Oudomxai', 20.6865, 101.9866),
-(5, 'ບໍ່ແກ້ວ', 'Bokeo', 20.2796, 100.4124),
-(6, 'ຫຼວງພະບາງ', 'Louang Phabang', 19.8833, 102.1333),
-(7, 'ຫົວພັນ', 'Houaphan', 20.4140, 104.0478),
-(8, 'ໄຊຍະບູລີ', 'Xaignabouli', 19.2553, 101.7483),
-(9, 'ຊຽງຂວາງ', 'Xiangkhoang', 19.4588, 103.3512),
-(10, 'ວຽງຈັນ', 'Vientiane', 18.8285, 102.4357),
-(11, 'ບໍລິຄຳໄຊ', 'Boli khamxai', 18.3758, 103.8828),
-(12, 'ຄຳມ່ວນ', 'Khammouan', 17.6521, 105.1517),
-(13, 'ສະຫວັນນະເຂດ', 'Savannakhet', 16.5562, 104.7527),
-(14, 'ສາລະວັນ', 'Salavan', 15.7161, 106.4172),
-(15, 'ເຊກອງ', 'Xekong', 15.3444, 106.7176),
-(16, 'ຈຳປາສັກ', 'Champasak', 15.1205, 105.7956),
-(17, 'ອັດຕະປື', 'Attapu', 14.8052, 106.8329),
-(18, 'ໄຊສົມບູນ', 'Sisomboun', 18.9056, 103.1119);
+INSERT INTO provinces (pr_id, pr_name, pr_name_en) VALUES
+(1, 'ນະຄອນຫລວງວຽງຈັນ', 'Vientiane capital'),
+(2, 'ຜົ້ງສາລີ', 'Phongsali'),
+(3, 'ຫລວງນ້ຳທາ', 'Louang Namtha'),
+(4, 'ອຸດົມໄຊ', 'Oudomxai'),
+(5, 'ບໍ່ແກ້ວ', 'Bokeo'),
+(6, 'ຫຼວງພະບາງ', 'Louang Phabang'),
+(7, 'ຫົວພັນ', 'Houaphan'),
+(8, 'ໄຊຍະບູລີ', 'Xaignabouli'),
+(9, 'ຊຽງຂວາງ', 'Xiangkhoang'),
+(10, 'ວຽງຈັນ', 'Vientiane'),
+(11, 'ບໍລິຄຳໄຊ', 'Boli khamxai'),
+(12, 'ຄຳມ່ວນ', 'Khammouan'),
+(13, 'ສະຫວັນນະເຂດ', 'Savannakhet'),
+(14, 'ສາລະວັນ', 'Salavan'),
+(15, 'ເຊກອງ', 'Xekong'),
+(16, 'ຈຳປາສັກ', 'Champasak'),
+(17, 'ອັດຕະປື', 'Attapu'),
+(18, 'ໄຊສົມບູນ', 'Sisomboun');
 
 
 INSERT INTO districts (dr_id, dr_name, dr_name_en, pr_id) VALUES

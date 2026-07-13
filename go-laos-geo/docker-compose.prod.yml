@@ -7,28 +7,19 @@ services:
     ports:
       - "3005:3005"
     environment:
-      - DB_HOST=${DB_HOST:-postgres}
-      - DB_PORT=${DB_PORT:-5432}
+      # ชี้ Database ไปที่ Supabase (ตั้งค่าผ่าน .env)
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
+      - DB_SSLMODE=${DB_SSLMODE:-require} # Supabase บังคับใช้ SSL
     depends_on:
-      - postgres
       - redis
     restart: unless-stopped
 
-  postgres:
-    image: postgres:15-alpine
-    container_name: laos-geo-postgres
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-    ports:
-      - "127.0.0.1:5432:5432"
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-    restart: unless-stopped
+  # ถอด postgres (Database หลัก) ออกไป เพราะเราไปใช้ Supabase แทน
+  # แต่ยังต้องเก็บ kong-db ไว้ เพราะ Kong ต้องการฐานข้อมูลส่วนตัว
 
   redis:
     image: redis:7-alpine
@@ -135,7 +126,6 @@ services:
     restart: unless-stopped
 
 volumes:
-  pg_data:
   kong_data:
   grafana_data:
   prometheus_data:

@@ -25,7 +25,7 @@ func (r *geoRepository) FetchProvinces(ctx context.Context, limit, offset int) (
 		return nil, 0, err
 	}
 
-	query := `SELECT pr_id, pr_name, pr_name_en FROM provinces LIMIT $1 OFFSET $2`
+	query := `SELECT pr_id, pr_name, pr_name_en, lat, lng FROM provinces LIMIT $1 OFFSET $2`
 	err = r.db.SelectContext(ctx, &provinces, query, limit, offset)
 	return provinces, total, err
 }
@@ -40,7 +40,7 @@ func (r *geoRepository) FetchDistrictsByProvince(ctx context.Context, provinceID
 		return nil, 0, err
 	}
 
-	query := `SELECT dr_id, dr_name, dr_name_en, pr_id FROM districts WHERE pr_id = $1 LIMIT $2 OFFSET $3`
+	query := `SELECT dr_id, dr_name, dr_name_en, pr_id, lat, lng FROM districts WHERE pr_id = $1 LIMIT $2 OFFSET $3`
 	err = r.db.SelectContext(ctx, &districts, query, provinceID, limit, offset)
 	return districts, total, err
 }
@@ -55,7 +55,7 @@ func (r *geoRepository) FetchVillagesByDistrict(ctx context.Context, districtID,
 		return nil, 0, err
 	}
 
-	query := `SELECT vill_id, vill_name, vill_name_en, dr_id FROM villages WHERE dr_id = $1 LIMIT $2 OFFSET $3`
+	query := `SELECT vill_id, vill_name, vill_name_en, dr_id, lat, lng FROM villages WHERE dr_id = $1 LIMIT $2 OFFSET $3`
 	err = r.db.SelectContext(ctx, &villages, query, districtID, limit, offset)
 	return villages, total, err
 }
