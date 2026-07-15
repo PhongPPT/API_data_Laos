@@ -1,7 +1,6 @@
 # Environments
-.env
-.env.local
-.env.*.local
+.env*
+!.env*.example
 
 # Go
 bin/

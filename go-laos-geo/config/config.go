@@ -8,15 +8,22 @@ import (
 )
 
 type Config struct {
+	DBUrl      string
 	DBHost     string
 	DBPort     string
 	DBUser     string
 	DBPassword string
 	DBName     string
+	SSLMode    string
 }
 
 func LoadConfig() (*Config, error) {
 	_ = godotenv.Load() // Ignore error if .env doesn't exist
+
+	// If a full connection string is provided (e.g. from Supabase/Render)
+	if url := os.Getenv("DATABASE_URL"); url != "" {
+		return &Config{DBUrl: url}, nil
+	}
 
 	host := os.Getenv("DB_HOST")
 	if host == "" {
@@ -43,15 +50,25 @@ func LoadConfig() (*Config, error) {
 		dbName = "laosgeo"
 	}
 
+	sslMode := os.Getenv("DB_SSLMODE")
+	if sslMode == "" {
+		sslMode = "disable" // Default for local dev
+	}
+
 	return &Config{
 		DBHost:     host,
 		DBPort:     port,
 		DBUser:     user,
 		DBPassword: password,
 		DBName:     dbName,
+		SSLMode:    sslMode,
 	}, nil
 }
 
 func (c *Config) GetDSN() string {
-	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", c.DBUser, c.DBPassword, c.DBHost, c.DBPort, c.DBName)
+	// Use explicit URL if provided
+	if c.DBUrl != "" {
+		return c.DBUrl
+	}
+	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", c.DBUser, c.DBPassword, c.DBHost, c.DBPort, c.DBName, c.SSLMode)
 }

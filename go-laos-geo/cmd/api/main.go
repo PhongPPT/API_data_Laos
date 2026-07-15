@@ -2,9 +2,11 @@ package main
 
 import (
 	"log"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
@@ -31,14 +33,28 @@ func main() {
 	geoUsecase := usecase.NewGeoUsecase(geoRepo)
 
 	app := fiber.New()
-	
+
 	// Add CORS middleware to allow frontend requests
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
-	
+
 	app.Use(logger.New())
+
+	// Add Built-in Rate Limiting (replaces Kong for free tier)
+	app.Use(limiter.New(limiter.Config{
+		Max:        100,             // Maximum 100 requests
+		Expiration: 1 * time.Minute, // Per 1 minute
+		KeyGenerator: func(c *fiber.Ctx) string {
+			return c.IP() // Limit by IP address
+		},
+		LimitReached: func(c *fiber.Ctx) error {
+			return c.Status(fiber.StatusTooManyRequests).JSON(fiber.Map{
+				"error": "Too Many Requests. Please wait a minute.",
+			})
+		},
+	}))
 
 	http.NewGeoHandler(app, geoUsecase)
 
