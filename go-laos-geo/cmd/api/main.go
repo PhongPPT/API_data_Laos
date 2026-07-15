@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -81,6 +82,12 @@ func main() {
 		return c.SendString(html)
 	})
 
-	log.Println("Server is running on :3005")
-	log.Fatal(app.Listen(":3005"))
+	// Use PORT environment variable if available (required for Render)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3005"
+	}
+
+	log.Printf("Server is running on :%s\n", port)
+	log.Fatal(app.Listen(":" + port))
 }
